@@ -5,8 +5,6 @@ from standard_precip.spi import SPI
 import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
-
-
 #%%
 dir_shp = "{}/Shapes/BR_UF_2020.shp".format(os.getcwd())
 dir_dados = "{}/Dados/Pr_GPCC_Brasil.csv".format(os.getcwd())
