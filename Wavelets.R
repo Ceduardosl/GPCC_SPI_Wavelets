@@ -7,14 +7,14 @@ if (!require("pacman")) {
 pacman::p_load("WaveletComp", "ggplot2", "tidyverse")
 dir_dados <- paste0(getwd(), "/Dados/SPI12-Dez.csv")
 
-spi_12 <- read.csv(dir_dados, sep = ";", header = FALSE, row.names = 1)
+spi_12 <- read.csv(dir_dados, sep = ";", header = FALSE)
 
 b1_df <- seq(1950, 2016)
 b2_df <- seq(1950, 2016)
 b3_df <- seq(1950, 2016)
 coords <- spi_12[(1:2), ]
 
-for (i in (1:ncol(spi_12))) {
+for (i in (2:ncol(spi_12))) {
 
     data_wavelets <- data.frame(SPI12 = spi_12[(-2:-1), i])
 
@@ -54,22 +54,29 @@ for (i in (1:ncol(spi_12))) {
         )
     b3_df <- cbind(b3_df, b3_rec$SPI12)
 }
+b1_df <- as.data.frame(b1_df)
+b2_df <- as.data.frame(b2_df)
+b3_df <- as.data.frame(b3_df)
 
+names(b1_df)[1] <- names(coords)[1]
+names(b2_df)[1] <- names(coords)[1]
+names(b3_df)[1] <- names(coords)[1]
 
+b1_df <- rbind(coords, b1_df)
+b2_df <- rbind(coords, b2_df)
+b3_df <- rbind(coords, b3_df)
 
-
-
-
-
-
-df <- data.frame(
-    data = seq(1950, 2016),
-    SPI12 = data_wavelets$SPI12
+write.table (
+    b1_df, file = paste0(getwd(),"/Dados/band1.csv"),
+    sep = ";", row.names = F, col.names = F
     )
 
-ggplot() +
-  theme_bw() +
-  geom_line(data = df, aes(x = data, y = SPI12), color = "black") +
-  geom_line(data = b1_rec, aes(x = data, y = SPI12), color = "green") +
-  geom_line(data = b2_rec, aes(x = data, y = SPI12), color = "blue") +
-  geom_line(data = b3_rec, aes(x = data, y = SPI12), color = "red")
+write.table (
+    b2_df, file = paste0(getwd(),"/Dados/band2.csv"),
+    sep = ";", row.names = F, col.names = F
+    )
+
+write.table (
+    b3_df, file = paste0(getwd(),"/Dados/band3.csv"),
+    sep = ";", row.names = F, col.names = F
+    )
